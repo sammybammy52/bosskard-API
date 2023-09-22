@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusinessDataController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,21 +32,10 @@ Route::get('/set-verify/{id}',[VerificationController::class,'setVerifyPhone']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
-    //create blog route
-    Route::post('/blog/store', [BlogController::class,'store']);
-    //edit blog route
-    Route::post('/blog/update', [BlogController::class, 'update']);
+    //create business account
+    Route::post('/setup-business', [BusinessDataController::class,'store']);
 
-    //delete blog route
-    Route::get('/blog/delete/{id}',[BlogController::class,'destroy']);
 
-    //set top story
-    Route::get('/set-top/{id}',[BlogController::class,'setTopStory']);
-
-    //discover Routes
-    Route::post('/discover/store', [DiscoverController::class,'store']);
-
-    Route::get('/discover/delete/{id}', [DiscoverController::class,'delete']);
 
 
     Route::post('/logout', [AuthController::class, 'logout']);
