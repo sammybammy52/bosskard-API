@@ -23,7 +23,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/set-verify/{id}',[VerificationController::class,'setVerifyPhone']);
+
 
 // Route::post('/initialize-phone-verification', [VerificationController::class, 'initializePhoneVerification']);
 // Route::post('/verify-phone', [VerificationController::class, 'verifyPhone']);
@@ -31,6 +31,8 @@ Route::get('/set-verify/{id}',[VerificationController::class,'setVerifyPhone']);
 //protected routes
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    Route::get('/set-verify',[VerificationController::class,'setVerifyPhone']);
 
     //create business account
     Route::post('/setup-business', [BusinessDataController::class,'store']);

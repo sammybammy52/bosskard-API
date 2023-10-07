@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 class VerificationController extends Controller
 {
 
-    public function setVerifyPhone($id)
+    public function setVerifyPhone(Request $request)
     {
+        $id = $request->user()->id;
+
         $user = User::find($id);
 
         $user->phone_verification = 1;
