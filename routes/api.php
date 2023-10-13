@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessDataController;
+use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //create business account
     Route::post('/setup-business', [BusinessDataController::class,'store']);
+    //store social media accounts
+    Route::post('/setup-socials', [SocialsController::class,'store']);
 
 
 
