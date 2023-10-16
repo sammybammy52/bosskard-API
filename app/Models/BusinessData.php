@@ -12,4 +12,8 @@ class BusinessData extends Model
     protected $table = 'business_data';
 
     protected $guarded = [];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

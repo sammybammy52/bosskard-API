@@ -19,6 +19,14 @@ class User extends Authenticatable
      */
     protected $guarded = [];
 
+    public function businessData() {
+        return $this->hasOne(BusinessData::class, 'user_id');
+    }
+
+    public function socials() {
+        return $this->hasOne(Social::class, 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
