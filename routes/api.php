@@ -44,7 +44,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //store social media accounts
     Route::post('/setup-socials', [SocialsController::class,'store']);
 
-    Route::get('/set-profile-info',[UserController::class,'setProfileInfo']);
+    Route::post('/store-profile-info',[UserController::class,'storeProfileInfo']);
     Route::get('/get-profile-info',[UserController::class,'getProfileInfo']);
 
 

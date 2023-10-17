@@ -27,6 +27,10 @@ class User extends Authenticatable
         return $this->hasOne(Social::class, 'user_id');
     }
 
+    public function openHours(){
+        return $this->hasMany(OpenHour::class, 'user_id')->orderBy('day', 'asc');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
