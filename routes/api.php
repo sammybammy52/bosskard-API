@@ -6,6 +6,7 @@ use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\StatesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,7 +46,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/setup-socials', [SocialsController::class,'store']);
 
     Route::post('/store-profile-info',[UserController::class,'storeProfileInfo']);
+    Route::post('/change-profile-pic',[UserController::class,'changeProfilePic']);
     Route::get('/get-profile-info',[UserController::class,'getProfileInfo']);
+
+    Route::get('/get-all-wallets',[WalletController::class,'getAllWallets']);
+
 
 
 

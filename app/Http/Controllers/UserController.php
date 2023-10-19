@@ -8,6 +8,7 @@ use App\Models\Social;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -62,6 +63,37 @@ class UserController extends Controller
             'socialsInfo' => $socialsInfo,
            // 'openHours' => $openHours,
         ], 201);
+    }
+
+    public function changeProfilePic(Request $request)
+    {
+        $user = User::find($request->user()->id);
+        if ($request->hasFile('businessLogo')) {
+            $image = $request->file('businessLogo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('public/images', $imageName);
+
+            // Retrieve the previous logo name from the database
+
+            $previousLogo = $user->businessLogo;
+
+            // Delete the previous logo file if it exists
+            if ($previousLogo && Storage::exists('public/images/' . $previousLogo)) {
+                Storage::delete('public/images/' . $previousLogo);
+            }
+
+            $data = [
+                'businessLogo' => $imageName,
+            ];
+
+            $user->update($data);
+
+            return $user;
+        } else {
+            return response([
+                'error' => 'Invalid image'
+            ], 401);
+        }
     }
 
     public function getProfileInfo(Request $request)

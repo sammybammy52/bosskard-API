@@ -31,6 +31,14 @@ class User extends Authenticatable
         return $this->hasMany(OpenHour::class, 'user_id')->orderBy('day', 'asc');
     }
 
+    public function nairaWallet(){
+        return $this->hasOne(NairaWallet::class, 'user_id');
+    }
+
+    public function tajiriWallet(){
+        return $this->hasOne(TajiriWallet::class, 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
