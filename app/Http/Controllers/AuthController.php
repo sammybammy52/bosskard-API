@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NairaWallet;
+use App\Models\TajiriWallet;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +30,19 @@ class AuthController extends Controller
         ];
 
         $user = User::create($data);
+
+        $nairaWalletData = [
+            'balance' => 0,
+            'user_id' => $user->id,
+        ];
+        NairaWallet::create($nairaWalletData);
+
+        $tajiriWalletData = [
+            'balance' => 0,
+            'user_id' => $user->id,
+        ];
+
+        TajiriWallet::create($tajiriWalletData);
 
         $token = $user->createToken('sammybammy')->plainTextToken;
 
