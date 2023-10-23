@@ -19,11 +19,15 @@ class WalletController extends Controller
 
         $tajiri_wallet = TajiriWallet::where('user_id', $id)->first();
 
-
+        //transaction history and pending taji transactions
+        $transactionHistory = TransactionLog::where('sender_id', $id)->orWhere('receiver_id', $id)->orderBy('created_at', 'desc')->take(15)->get();
+        $manualTajiDeposits = ManualTajiDeposit::where('user_id', $id)->where('status', 'pending')->orderBy('created_at', 'desc')->get();
 
         return response([
             'naira_wallet' => $naira_wallet,
             'tajiri_wallet' => $tajiri_wallet,
+            'transactionHistory' => $transactionHistory,
+            'manualTajiDeposits' => $manualTajiDeposits
         ], 200);
     }
 
@@ -71,7 +75,7 @@ class WalletController extends Controller
                     'misc' => $response,
                     'sender_id' => 0,
                     'receiver_id' => $user_id,
-                    'transaction_type' => 'deposit',
+                    'transaction_type' => 'Naira Deposit',
                     'amount' => $result->data->metadata->funds,
                     'currency' => 'naira'
                 ];
@@ -113,7 +117,7 @@ class WalletController extends Controller
             'misc' => $pending_transaction,
             'sender_id' => 0,
             'receiver_id' => $user_id,
-            'transaction_type' => 'deposit',
+            'transaction_type' => 'Taji Deposit',
             'amount' => $pending_transaction->price,
             'currency' => 'tajiri'
         ];

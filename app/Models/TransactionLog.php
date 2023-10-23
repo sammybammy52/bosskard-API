@@ -10,4 +10,8 @@ class TransactionLog extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $hidden = [
+        'misc'
+    ];
 }

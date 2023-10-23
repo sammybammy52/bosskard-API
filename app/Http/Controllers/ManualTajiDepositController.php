@@ -18,8 +18,8 @@ class ManualTajiDepositController extends Controller
 
         $data = [
             'user_id' => $user_id,
-            'currency' => $request->currency,
-            'price' => $request->price,
+            'currency' => 'tajiri',
+            'price' => $request->deposit,
             'proof_of_payment' => $fileName,
         ];
         $payment = ManualTajiDeposit::create($data);
@@ -29,7 +29,7 @@ class ManualTajiDepositController extends Controller
 
     public function getAllManualPayments()
     {
-        return ManualTajiDeposit::where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        return ManualTajiDeposit::with('user')->where('status', 'pending')->orderBy('created_at', 'desc')->get();
     }
 
     public function userSpecificManualPayments(Request $request)

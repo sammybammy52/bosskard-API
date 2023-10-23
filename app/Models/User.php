@@ -39,6 +39,10 @@ class User extends Authenticatable
         return $this->hasOne(TajiriWallet::class, 'user_id');
     }
 
+    public function manualTajiDeposit(){
+        return $this->hasMany(ManualTajiDeposit::class, 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
