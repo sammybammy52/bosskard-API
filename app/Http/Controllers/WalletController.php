@@ -114,7 +114,7 @@ class WalletController extends Controller
 
         $transactionData = [
             'payment_method' => 'tajiri',
-            'misc' => $pending_transaction,
+            'misc' => json_encode($pending_transaction),
             'sender_id' => 0,
             'receiver_id' => $user_id,
             'transaction_type' => 'Taji Deposit',
