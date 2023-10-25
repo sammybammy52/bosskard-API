@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessDataController;
+use App\Http\Controllers\ExploreBusinessesController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ManualTajiDepositController;
 use App\Http\Controllers\PatchController;
@@ -41,6 +42,9 @@ Route::get('/client/get-cities/{country_id}/{state_id}', [LocationController::cl
 //get business category list
 Route::get('/client/get-business-category-list', [BusinessDataController::class, 'getBusinessCategoryList']);
 
+//featured data for the explore businesses page
+
+Route::get('/client/explore-featured-data', [ExploreBusinessesController::class, 'exploreFeaturedData']);
 
 
 // Route::post('/initialize-phone-verification', [VerificationController::class, 'initializePhoneVerification']);
