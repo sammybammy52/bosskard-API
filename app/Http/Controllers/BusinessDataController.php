@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessCategory;
 use App\Models\BusinessData;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,5 +36,12 @@ class BusinessDataController extends Controller
             'user' => $userData
         ], 201);
 
+    }
+
+    public function getBusinessCategoryList()
+    {
+        $categories = BusinessCategory::all();
+
+        return response($categories, 200);
     }
 }
