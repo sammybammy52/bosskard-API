@@ -21,8 +21,9 @@ class UserController extends Controller
         $businessData = [
             'businessAddress' => $profileInfo->businessAddress,
             'businessPhone' => $profileInfo->businessPhone,
-            'state_id' => $profileInfo->state,
-            'lga_id' => $profileInfo->lga,
+            'country' => $profileInfo->country,
+            'state' => $profileInfo->state,
+            'city' => $profileInfo->city,
         ];
         $socialsData = [
             'user_id' => $user_id,
