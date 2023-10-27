@@ -16,4 +16,12 @@ class BusinessData extends Model
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function businessCategoryInformation() {
+        return $this->belongsTo(BusinessCategory::class, 'businessCategory');
+    }
+
+    protected $hidden = [
+        'cacRegNumber'
+    ];
 }

@@ -10,4 +10,9 @@ class BusinessCategory extends Model
     use HasFactory;
 
     protected $table = 'business_categories';
+
+    public function businessData()
+    {
+        return $this->hasMany(BusinessData::class, 'businessCategory');
+    }
 }

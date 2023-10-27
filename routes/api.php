@@ -46,6 +46,9 @@ Route::get('/client/get-business-category-list', [BusinessDataController::class,
 
 Route::get('/client/explore-featured-data', [ExploreBusinessesController::class, 'exploreFeaturedData']);
 
+//get businesses by categories
+Route::get('/client/get-businesses-by-category/{category_id}', [ExploreBusinessesController::class, 'getBusinessesByCategory']);
+
 
 // Route::post('/initialize-phone-verification', [VerificationController::class, 'initializePhoneVerification']);
 // Route::post('/verify-phone', [VerificationController::class, 'verifyPhone']);
