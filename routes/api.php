@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessDataController;
+use App\Http\Controllers\CardsController;
 use App\Http\Controllers\ExploreBusinessesController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ManualTajiDepositController;
@@ -49,9 +50,14 @@ Route::get('/client/explore-featured-data', [ExploreBusinessesController::class,
 //get businesses by categories
 Route::get('/client/get-businesses-by-category/{category_id}', [ExploreBusinessesController::class, 'getBusinessesByCategory']);
 
+//get businesses by state
+Route::get('/client/get-businesses-by-state/{state_id}', [ExploreBusinessesController::class, 'getBusinessesByState']);
+
 //client filter search
 Route::post('/client/filter-search', [ExploreBusinessesController::class, 'filterSearch']);
 
+//client fetch business details
+Route::get('/client/public-business-page/{id}', [ExploreBusinessesController::class, 'publicBusinessPage']);
 
 // Route::post('/initialize-phone-verification', [VerificationController::class, 'initializePhoneVerification']);
 // Route::post('/verify-phone', [VerificationController::class, 'verifyPhone']);
@@ -77,6 +83,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/client/manual-taji-payment', [ManualTajiDepositController::class, 'initializeManualTajiPayment']);
     Route::get('/client/my-manual-payments', [ManualTajiDepositController::class, 'userSpecificManualPayments']);
+
+    //business cards
+    Route::post('/create-my-card', [CardsController::class, 'createMyCard']);
+    Route::post('/create-third-party-card', [CardsController::class, 'createThirdPartyCard']);
+
 
 
 

@@ -7,6 +7,7 @@ use App\Models\BusinessData;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\State;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ExploreBusinessesController extends Controller
@@ -30,13 +31,25 @@ class ExploreBusinessesController extends Controller
             ->where('businessCategory', $category_id)
             ->get();
 
-            return response([
-              'status' =>'success',
-                'businesses' => $businesses
-            ], 200);
+        return response([
+            'status' => 'success',
+            'businesses' => $businesses
+        ], 200);
     }
 
-    public function filterSearch( Request $request)
+    public function getBusinessesByState($state_id)
+    {
+        $businesses = BusinessData::with(['user', 'businessCategoryInformation'])
+            ->where('state', $state_id)
+            ->get();
+
+        return response([
+            'status' => 'success',
+            'businesses' => $businesses
+        ], 200);
+    }
+
+    public function filterSearch(Request $request)
     {
         $businesses = BusinessData::query();
 
@@ -73,5 +86,14 @@ class ExploreBusinessesController extends Controller
             'countries' => $countries,
             'status' => 'success',
         ], 200);
+    }
+
+    public function publicBusinessPage($id)
+    {
+        $userData = User::with(['businessData', 'socials', 'openHours'])
+            ->where('id', $id)
+            ->first();
+
+        return $userData;
     }
 }
