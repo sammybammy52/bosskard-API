@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('filler_id');
             $table->boolean('claimed')->default(0);
             $table->integer('business_id')->default(0);
+            $table->integer('template');
             $table->timestamps();
         });
     }

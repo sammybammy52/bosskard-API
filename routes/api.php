@@ -85,8 +85,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/client/my-manual-payments', [ManualTajiDepositController::class, 'userSpecificManualPayments']);
 
     //business cards
-    Route::post('/create-my-card', [CardsController::class, 'createMyCard']);
-    Route::post('/create-third-party-card', [CardsController::class, 'createThirdPartyCard']);
+    Route::post('/create-card', [CardsController::class, 'createCard']);
+    Route::post('/edit-card', [CardsController::class, 'editCard']);
+    Route::post('/delete-card', [CardsController::class, 'editCard']);
+    Route::get('/list-cards', [CardsController::class, 'listCards']);
 
 
 
