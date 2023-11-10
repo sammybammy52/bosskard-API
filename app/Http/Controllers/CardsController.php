@@ -15,8 +15,8 @@ class CardsController extends Controller
             'name' => 'required|string',
             'phone_1' => 'required|string',
             'email' => 'required|string',
-            'company_name' => 'required|string',
-            'logo' => 'required|image|max:2048',
+            //'company_name' => 'required|string',
+            'logo' => 'required|max:2048',
             'filler_id' => 'required',
             'template' => 'required'
         ]);
@@ -37,6 +37,10 @@ class CardsController extends Controller
             'address' => $request->address,
             'company_name' => $request->company_name,
             'logo' => $imageName,
+            'color_1' => $request->color_1,
+            'color_2' => $request->color_2,
+            'logoX' => $request->logoX,
+            'logoY' => $request->logoY,
             'filler_id' => $request->user()->id,
             'template' => $request->template
 
@@ -46,6 +50,7 @@ class CardsController extends Controller
             $businessData = BusinessData::where('user_id', $request->user()->id)->first();
             $data['claimed'] = 1;
             $data['business_id'] = $businessData->id;
+            $data['isMyCard'] = 1;
         }
 
         $card = Card::create($data);

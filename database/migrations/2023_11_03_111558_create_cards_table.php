@@ -22,12 +22,18 @@ return new class extends Migration
             $table->string('email');
             $table->string('website');
             $table->string('address');
-            $table->string('company_name');
+            $table->string('company_name')->nullable();
             $table->string('logo');
+            $table->string('color_1');
+            $table->string('color_2');
+            $table->integer('logoX');
+            $table->integer('logoY');
             $table->integer('filler_id');
             $table->boolean('claimed')->default(0);
             $table->integer('business_id')->default(0);
             $table->integer('template');
+            $table->boolean('isMyCard')->default(0);
+            $table->boolean('flip')->default(0);
             $table->timestamps();
         });
     }

@@ -87,7 +87,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //business cards
     Route::post('/create-card', [CardsController::class, 'createCard']);
     Route::post('/edit-card', [CardsController::class, 'editCard']);
-    Route::post('/delete-card', [CardsController::class, 'editCard']);
+    Route::post('/delete-card', [CardsController::class, 'deleteCard']);
     Route::get('/list-cards', [CardsController::class, 'listCards']);
 
 
