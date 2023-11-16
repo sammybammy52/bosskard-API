@@ -44,4 +44,14 @@ class LocationController extends Controller
 
         return response( $result, 200 );
     }
+
+    public function getCurrencies()
+    {
+        $currencies = Country::select('currency', 'currency_name')->get();
+
+        return response([
+            'status' => 'success',
+            'currencies' => $currencies
+        ], 200);
+    }
 }

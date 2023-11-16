@@ -46,10 +46,12 @@ class CardsController extends Controller
 
         ];
 
-        if ($request->isMyCard == true) {
+        $isMyCard = json_decode($request->isMyCard);
+
+        if ($isMyCard === true) {
             $businessData = BusinessData::where('user_id', $request->user()->id)->first();
             $data['claimed'] = 1;
-            $data['business_id'] = $businessData->id;
+            $data['business_id'] = $businessData->user_id;
             $data['isMyCard'] = 1;
         }
 

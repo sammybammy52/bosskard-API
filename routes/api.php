@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessDataController;
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\ExploreBusinessesController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ManualTajiDepositController;
 use App\Http\Controllers\PatchController;
@@ -29,6 +30,9 @@ use Illuminate\Support\Facades\Route;
 //patch routes
 Route::get('/patch-all-wallets', [PatchController::class, 'patchAllWallets']);
 
+//alternate image route
+Route::get('/alt-image-route/{filename}', [ImageController::class, 'getImages']);
+
 
 //public routes
 
@@ -39,6 +43,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/client/get-countries', [LocationController::class, 'getCountries']);
 Route::get('/client/get-states/{country_id}', [LocationController::class, 'getStates']);
 Route::get('/client/get-cities/{country_id}/{state_id}', [LocationController::class, 'getCities']);
+
+//get currencies for countries
+Route::get('/client/get-currencies', [LocationController::class, 'getCurrencies']);
 
 //get business category list
 Route::get('/client/get-business-category-list', [BusinessDataController::class, 'getBusinessCategoryList']);
