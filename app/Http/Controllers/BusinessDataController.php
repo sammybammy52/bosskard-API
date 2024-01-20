@@ -35,7 +35,6 @@ class BusinessDataController extends Controller
             'status' => 'success',
             'user' => $userData
         ], 201);
-
     }
 
     public function getBusinessCategoryList()
@@ -43,5 +42,17 @@ class BusinessDataController extends Controller
         $categories = BusinessCategory::all();
 
         return response($categories, 200);
+    }
+
+    public function updateBio(Request $request)
+    {
+        $businessData = BusinessData::where('user_id', $request->user()->id)->first();
+
+        $businessData->update(['businessDescription' => $request->description, 'youtube' => $request->youtube]);
+
+        return response([
+            'status' => 'success',
+            'data' => $businessData,
+        ], 200);
     }
 }

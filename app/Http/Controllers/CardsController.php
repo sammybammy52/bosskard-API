@@ -131,6 +131,27 @@ class CardsController extends Controller
             'cards' => $cards,
         ], 200);
     }
+    public function listPublicCards( $id )
+    {
+        $businessData = BusinessData::where('user_id', $id)->first();
+
+        //get cards that you created or cards that have your business ID
+        $cards = Card::where('filler_id', $id)->get();
+
+        return response([
+            'status' => 'success',
+            'cards' => $cards,
+        ], 200);
+    }
+
+    public function getPublicCards()
+    {
+        $cards = Card::inRandomOrder()->take(6)->get();
+        return response([
+            'status' => 'success',
+            'cards' => $cards,
+        ], 200);
+    }
 
 
 }

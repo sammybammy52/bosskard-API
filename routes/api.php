@@ -28,10 +28,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 //patch routes
-Route::get('/patch-all-wallets', [PatchController::class, 'patchAllWallets']);
+// Route::get('/patch-all-wallets', [PatchController::class, 'patchAllWallets']);
+
 
 //alternate image route
 Route::get('/alt-image-route/{filename}', [ImageController::class, 'getImages']);
+
+Route::get('/get-public-cards/{id}', [CardsController::class, 'listPublicCards']);
+
+Route::get('/get-public-cards', [CardsController::class, 'getPublicCards']);
+
 
 
 //public routes
@@ -97,6 +103,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/delete-card', [CardsController::class, 'deleteCard']);
     Route::get('/list-cards', [CardsController::class, 'listCards']);
 
+    //update bio
+
+    Route::post('/update-bio', [BusinessDataController::class, 'updateBio']);
 
 
 
