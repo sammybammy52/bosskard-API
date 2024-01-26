@@ -5,6 +5,7 @@ use App\Http\Controllers\BusinessDataController;
 use App\Http\Controllers\CardsController;
 use App\Http\Controllers\ExploreBusinessesController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\LikedItemController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ManualTajiDepositController;
 use App\Http\Controllers\PatchController;
@@ -47,6 +48,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 //get states and lga
 Route::get('/client/get-countries', [LocationController::class, 'getCountries']);
+Route::get('/client/get-westafrican-countries', [LocationController::class, 'getWestAfricanCountries']);
 Route::get('/client/get-states/{country_id}', [LocationController::class, 'getStates']);
 Route::get('/client/get-cities/{country_id}/{state_id}', [LocationController::class, 'getCities']);
 
@@ -102,10 +104,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/edit-card', [CardsController::class, 'editCard']);
     Route::post('/delete-card', [CardsController::class, 'deleteCard']);
     Route::get('/list-cards', [CardsController::class, 'listCards']);
+    //like cards
+    Route::get('/like-card/{card_id}', [LikedItemController::class, 'likeCard']);
 
     //update bio
 
     Route::post('/update-bio', [BusinessDataController::class, 'updateBio']);
+
+
 
 
 

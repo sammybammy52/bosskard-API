@@ -54,4 +54,16 @@ class LocationController extends Controller
             'currencies' => $currencies
         ], 200);
     }
+
+    public function getWestAfricanCountries()
+    {
+        $countries = Country::where("subregion", "Western Africa")->get();
+
+        $result = [
+            'countries' => $countries,
+            'status' => 'success',
+        ];
+
+        return response( $result, 200 );
+    }
 }

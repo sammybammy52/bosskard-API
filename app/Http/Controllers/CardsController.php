@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessCategory;
 use App\Models\BusinessData;
 use App\Models\Card;
+use App\Models\Country;
+use App\Models\LikedItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class CardsController extends Controller
 {
-    public function createCard( Request $request )
+    public function createCard(Request $request)
     {
         $fields = $request->validate([
             'name' => 'required|string',
@@ -51,7 +54,7 @@ class CardsController extends Controller
         if ($isMyCard === true) {
             $businessData = BusinessData::where('user_id', $request->user()->id)->first();
             $data['claimed'] = 1;
-            $data['business_id'] = $businessData->user_id;
+            $data['business_id'] = $businessData->id;
             $data['isMyCard'] = 1;
         }
 
@@ -63,7 +66,7 @@ class CardsController extends Controller
         ]);
     }
 
-    public function editCard( Request $request )
+    public function editCard(Request $request)
     {
         $data = $request->all();
         $card_id = $request->card_id;
@@ -72,7 +75,7 @@ class CardsController extends Controller
 
         if ($request->hasFile('logo')) {
             //store the new image
-             $image = $request->file('logo');
+            $image = $request->file('logo');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('public/images', $imageName);
 
@@ -95,9 +98,7 @@ class CardsController extends Controller
                 'status' => 'success',
                 'data' => $card
             ], 200);
-
-        }
-        else {
+        } else {
             unset($data['card_id']);
             $card->update($data);
 
@@ -108,30 +109,29 @@ class CardsController extends Controller
         }
     }
 
-    public function deleteCard( Request $request )
+    public function deleteCard(Request $request)
     {
         Card::destroy($request->card_id);
         return response([
             'status' => 'success',
         ], 200);
-
     }
 
-    public function listCards( Request $request )
+    public function listCards(Request $request)
     {
         $businessData = BusinessData::where('user_id', $request->user()->id)->first();
 
         //get cards that you created or cards that have your business ID
         $cards = Card::where('filler_id', $request->user()->id)
-        ->orWhere('business_id', $businessData->id)
-        ->get();
+            ->orWhere('business_id', $businessData->id)
+            ->get();
 
         return response([
             'status' => 'success',
             'cards' => $cards,
         ], 200);
     }
-    public function listPublicCards( $id )
+    public function listPublicCards($id)
     {
         $businessData = BusinessData::where('user_id', $id)->first();
 
@@ -144,14 +144,125 @@ class CardsController extends Controller
         ], 200);
     }
 
-    public function getPublicCards()
+    public function getPublicCards(Request $request)
     {
+        // return $request->user_id;
         $cards = Card::inRandomOrder()->take(6)->get();
+
+        if ($request->user_id) {
+            $likedIds = LikedItem::where([
+                'user_id' => $request->user_id,
+                'item_type' => 'card',
+            ])->pluck('item_id')->toArray();
+
+            //map and set liked
+            foreach ($cards as $i) {
+                if (in_array($i->id, $likedIds)) {
+                    $i->liked = 1;
+                }
+            }
+        }
+
+
         return response([
             'status' => 'success',
             'cards' => $cards,
         ], 200);
     }
 
+    public function getCardsByCountry(Request $request, $country_id)
+    {
+        $cards = Card::select('cards.*', 'business_data.country', 'business_data.state', 'business_data.city')
+            ->join('business_data', 'cards.business_id', 'business_data.id')
+            ->where('business_data.country', $country_id)
+            ->get();
 
+        if ($request->user_id) {
+            $likedIds = LikedItem::where([
+                'user_id' => $request->user_id,
+                'item_type' => 'card',
+            ])->pluck('item_id')->toArray();
+
+            //map and set liked
+            foreach ($cards as $i) {
+                if (in_array($i->id, $likedIds)) {
+                    $i->liked = 1;
+                }
+            }
+        }
+
+        return response([
+            'status' => 'success',
+            'cards' => $cards,
+        ], 200);
+    }
+    public function getCardsByCategory(Request $request, $category_id)
+    {
+        $cards = Card::select('cards.*', 'business_data.country', 'business_data.state', 'business_data.city', 'business_data.category_id')
+            ->join('business_data', 'cards.business_id', 'business_data.id')
+            ->where('business_data.category_id', $category_id)
+            ->get();
+
+        if ($request->user_id) {
+            $likedIds = LikedItem::where([
+                'user_id' => $request->user_id,
+                'item_type' => 'card',
+            ])->pluck('item_id')->toArray();
+
+            //map and set liked
+            foreach ($cards as $i) {
+                if (in_array($i->id, $likedIds)) {
+                    $i->liked = 1;
+                }
+            }
+        }
+
+        return response([
+            'status' => 'success',
+            'cards' => $cards,
+        ], 200);
+    }
+
+    public function filterSearch(Request $request)
+    {
+        $cards = Card::query();
+
+        if ($request->filled('search')) {
+            // $cards->where('company_name', 'LIKE', '%' . $request->input('search') . '%');
+            $cards->where(function ($query) use ($request) {
+                $query->where('company_name', 'LIKE', '%' . $request->input('search') . '%')
+                    ->orWhere('name', 'LIKE', '%' . $request->input('search') . '%');
+            });
+        }
+
+        if ($request->filled('category')) {
+            $cards->where('businessCategory', $request->input('category'));
+        }
+
+        if ($request->filled('country')) {
+            $cards->where('country', $request->input('country'));
+        }
+
+        if ($request->filled('state')) {
+            $cards->where('state', $request->input('state'));
+        }
+
+        if ($request->filled('city')) {
+            $cards->where('city', $request->input('city'));
+        }
+
+        $cards = $cards->get();
+
+        $allCategories = BusinessCategory::all();
+
+        $countries = Country::all();
+
+
+        return response([
+            'cards' => $cards,
+            'allCategories' => $allCategories,
+            'countries' => $countries,
+            'status' => 'success',
+        ], 200);
+    }
 }
