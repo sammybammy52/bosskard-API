@@ -39,6 +39,11 @@ Route::get('/get-public-cards/{id}', [CardsController::class, 'listPublicCards']
 
 Route::get('/get-public-cards', [CardsController::class, 'getPublicCards']);
 
+Route::get('/get-cards-by-country/{country_id}', [CardsController::class, 'getCardsByCountry']);
+
+Route::get('/get-cards-by-category/{category_id}', [CardsController::class, 'getCardsByCategory']);
+Route::post('/client/filter-search-cards', [CardsController::class, 'filterSearch']);
+
 
 
 //public routes

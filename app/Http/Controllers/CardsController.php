@@ -45,7 +45,11 @@ class CardsController extends Controller
             'logoX' => $request->logoX,
             'logoY' => $request->logoY,
             'filler_id' => $request->user()->id,
-            'template' => $request->template
+            'template' => $request->template,
+            'category' => $request->category,
+            'country' => $request->country,
+            'state' => $request->state,
+            'city' => $request->city,
 
         ];
 
@@ -172,9 +176,7 @@ class CardsController extends Controller
 
     public function getCardsByCountry(Request $request, $country_id)
     {
-        $cards = Card::select('cards.*', 'business_data.country', 'business_data.state', 'business_data.city')
-            ->join('business_data', 'cards.business_id', 'business_data.id')
-            ->where('business_data.country', $country_id)
+        $cards = Card::where('country', $country_id)
             ->get();
 
         if ($request->user_id) {
@@ -196,12 +198,10 @@ class CardsController extends Controller
             'cards' => $cards,
         ], 200);
     }
+    
     public function getCardsByCategory(Request $request, $category_id)
     {
-        $cards = Card::select('cards.*', 'business_data.country', 'business_data.state', 'business_data.city', 'business_data.category_id')
-            ->join('business_data', 'cards.business_id', 'business_data.id')
-            ->where('business_data.category_id', $category_id)
-            ->get();
+        $cards = Card::where('category', $category_id)->get();
 
         if ($request->user_id) {
             $likedIds = LikedItem::where([
@@ -256,6 +256,20 @@ class CardsController extends Controller
         $allCategories = BusinessCategory::all();
 
         $countries = Country::all();
+
+        if ($request->user_id) {
+            $likedIds = LikedItem::where([
+                'user_id' => $request->user_id,
+                'item_type' => 'card',
+            ])->pluck('item_id')->toArray();
+
+            //map and set liked
+            foreach ($cards as $i) {
+                if (in_array($i->id, $likedIds)) {
+                    $i->liked = 1;
+                }
+            }
+        }
 
 
         return response([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Card;
 use App\Models\LikedItem;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,11 @@ class LikedItemController extends Controller
 
         if ($likedCard) {
             $unlike = $likedCard->delete();
+            $targetCard = Card::find($card_id);
+            if ($targetCard->like_count !== 0) {
+                $targetCard->like_count -= 1;
+                $targetCard->save();
+            }
 
             return response([
                 'status' => 'success',
@@ -32,12 +38,14 @@ class LikedItemController extends Controller
                 'item_id' => $card_id
             ]);
 
+            $targetCard = Card::find($card_id);
+            $targetCard->like_count += 1;
+            $targetCard->save();
+
             return response([
                 'status' => 'success',
                 'message' => 'liked'
             ], 200);
         }
     }
-
-    
 }
