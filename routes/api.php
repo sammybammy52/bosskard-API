@@ -14,6 +14,7 @@ use App\Http\Controllers\StatesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\WebsiteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,7 @@ Route::get('/get-cards-by-country/{country_id}', [CardsController::class, 'getCa
 
 Route::get('/get-cards-by-category/{category_id}', [CardsController::class, 'getCardsByCategory']);
 Route::post('/client/filter-search-cards', [CardsController::class, 'filterSearch']);
+
 
 
 
@@ -112,9 +114,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //like cards
     Route::get('/like-card/{card_id}', [LikedItemController::class, 'likeCard']);
 
+    Route::get('/get-liked-cards', [CardsController::class, 'getLikedCards']);
+
     //update bio
 
     Route::post('/update-bio', [BusinessDataController::class, 'updateBio']);
+
+    //website setup
+
+    Route::post('/update-website', [WebsiteController::class, 'updateWebsite']);
 
 
 

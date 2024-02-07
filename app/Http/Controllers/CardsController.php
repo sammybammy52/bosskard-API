@@ -198,7 +198,7 @@ class CardsController extends Controller
             'cards' => $cards,
         ], 200);
     }
-    
+
     public function getCardsByCategory(Request $request, $category_id)
     {
         $cards = Card::where('category', $category_id)->get();
@@ -223,7 +223,7 @@ class CardsController extends Controller
         ], 200);
     }
 
-    public function filterSearch(Request $request)
+    public function mfilterSearch(Request $request)
     {
         $cards = Card::query();
 
@@ -278,5 +278,24 @@ class CardsController extends Controller
             'countries' => $countries,
             'status' => 'success',
         ], 200);
+    }
+
+    public function getLikedCards(Request $request)
+    {
+        $likedIds = LikedItem::where([
+            'user_id' => $request->user()->id,
+            'item_type' => 'card',
+        ])->pluck('item_id')->toArray();
+
+        $cards = Card::whereIn('id', $likedIds)->get();
+
+        foreach ($cards as $i) {
+             $i->liked = 1;
+        }
+
+        return [
+            'status' => 'success',
+            'cards' => $cards,
+        ];
     }
 }
