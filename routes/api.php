@@ -9,6 +9,7 @@ use App\Http\Controllers\LikedItemController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ManualTajiDepositController;
 use App\Http\Controllers\PatchController;
+use App\Http\Controllers\PublicUploadController;
 use App\Http\Controllers\SocialsController;
 use App\Http\Controllers\StatesController;
 use App\Http\Controllers\UserController;
@@ -50,7 +51,12 @@ Route::post('/client/filter-search-cards', [CardsController::class, 'filterSearc
 
 //public routes
 
+//public image upload
+Route::post('/public-upload', [PublicUploadController::class, 'uploadImage']);
+
+
 Route::post('/register', [AuthController::class, 'register']);
+
 
 Route::post('/login', [AuthController::class, 'login']);
 //get states and lga
